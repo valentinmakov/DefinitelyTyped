@@ -26,6 +26,7 @@
 //                 Romain Faust <https://github.com/romain-faust>
 //                 Be Birchall <https://github.com/bebebebebe>
 //                 Jesse Katsumata <https://github.com/Naturalclar>
+//                 Valentin Makov <https://github.com/valentinmakov>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 2.8
 
@@ -8566,7 +8567,7 @@ export interface ARTClippingRectangleProps extends ARTNodeMixin {
 }
 
 export interface ARTRenderableMixin extends ARTNodeMixin {
-    fill?: string;
+    fill?: string | ARTGradient;
     stroke?: string;
     strokeCap?: 'butt' | 'square' | 'round';
     strokeDash?: number[];
@@ -8591,6 +8592,11 @@ export interface ARTSurfaceProps {
     height: number;
 }
 
+export interface ARTGradient {
+    _bb: boolean,
+    _brush: ReadonlyArray<number>,
+  }
+
 export class ClippingRectangle extends React.Component<ARTClippingRectangleProps> {}
 
 export class Group extends React.Component<ARTGroupProps> {}
@@ -8601,9 +8607,21 @@ export class Surface extends React.Component<ARTSurfaceProps> {}
 
 export class ARTText extends React.Component<ARTTextProps> {}
 
+export interface ARTLinearGradientConstructor {
+    prototype: ARTGradient,
+    new (stops: ReadonlyArray<string> | {[key: number]: string}, x1: number | null, y1: number | null, x2: number | null, y2: number | null): ARTGradient,
+}
+
+export interface ARTRadialGradientConstructor {
+    prototype: ARTGradient,
+    new (stops: ReadonlyArray<string> | {[key: number]: string}, fx: number, fy: number, rx: number, ry?: number | null, cx?: number | null, cy?: number | null): ARTGradient,
+}
+
 export interface ARTStatic {
     ClippingRectangle: typeof ClippingRectangle;
     Group: typeof Group;
+    LinearGradient: ARTLinearGradientConstructor;
+    RadialGradient: ARTRadialGradientConstructor;
     Shape: typeof Shape;
     Surface: typeof Surface;
     Text: typeof ARTText;
